@@ -42,8 +42,18 @@ def q_3():
         return False
 
 
+
+
 def q_4():
-    pass
+    exists = r.answer.exists("analytics_low_visibility_high_activity")
+    if exists == 1:
+        answer = r.answer.get("analytics_low_visibility_high_activity")
+        answer_list = json.loads(answer)
+        return answer_list
+    else:
+        answer_from_mongo = analytics_low_visibility_high_activity_mongo()
+        r.answer.set("analytics_low_visibility_high_activity",json.dumps(answer_from_mongo))
+        return False
 
 
 
