@@ -1,0 +1,63 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: social_commerce_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: social_commerce
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - test_18
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/social_commerce --quiet
+      interval: 60s
+      timeout: 5s
+      retries: 5
+
+
+  redis:
+    image: redis:7
+    container_name: social_commerce_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_HOST: "0.0.0.0"
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: "1234"
+      REDIS_DB: "0"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test_18
+
+
+
+  analytics-api:
+    build: ./analytics-api
+    container_name: analytics-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - test_18
+  
+
+networks:
+  social_commerce_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+  
