@@ -20,8 +20,6 @@ def analytics_alerts_by_border_and_priority():
 
 
 
-
-
 @app.get("/analytics/top-urgent-zones")
 def analytics_top_urgent_zones():
         memory = q_2() 
@@ -36,7 +34,7 @@ def analytics_top_urgent_zones():
 
 @app.get("/analytics/distance-distribution")
 def analytics_distance_distribution():
-    memory = q_2() 
+    memory = q_3() 
     if memory == False:
         return analytics_distance_distribution_mongo()
     else:
@@ -49,7 +47,11 @@ def analytics_distance_distribution():
 
 @app.get("/analytics/low-visibility-high-activity")
 def analytics_low_visibility_high_activity():
-    pass
+    memory = q_4() 
+    if memory == False:
+        return analytics_low_visibility_high_activity_mongo()
+    else:
+        return json.dumps(memory)
 
 
 @app.get("/analytics/hot-zones")

@@ -52,6 +52,28 @@ services:
     networks:
       - test_18
   
+consumer:
+    build: ./consumer
+    container_name: consumer
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - test_18
+
+producer:
+    build: ./producer
+    container_name: producer
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - test_18
+
 
 networks:
   social_commerce_network:

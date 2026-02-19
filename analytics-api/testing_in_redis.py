@@ -40,3 +40,13 @@ def q_3():
         answer_from_mongo = analytics_distance_distribution_mongo()
         r.answer.set("analytics_distance_distribution",json.dumps(answer_from_mongo))
         return False
+
+
+def q_4():
+    pass
+
+
+
+def q_5():
+    pass
+
